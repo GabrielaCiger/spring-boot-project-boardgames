@@ -5,6 +5,7 @@ import fr.le_campus_numerique.square_games.engine.GameFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @RestController
@@ -13,6 +14,7 @@ public class GameCatalogController {
     @Autowired
     private GameCatalog gameCatalog;
     private GameFactory gameFactory;
+    private Collection<Game> games = new ArrayList<>();
 
     @GetMapping("/games")
     public Collection<String> getGamesIds(){ return gameCatalog.getGameIdentifiers(); }
@@ -20,14 +22,14 @@ public class GameCatalogController {
     @PostMapping("/games")
     public String createGame(@RequestBody GameCreationParamsDTO params) {
         this.gameFactory = gameCatalog.getGameFactory(params.getGameType());
-        Game game = gameFactory.createGame(params.getPlayerCount(), params.getBoardSize());
-        return game.getId().toString();
+        Game newGame = gameFactory.createGame(params.getPlayerCount(), params.getBoardSize());
+        games.add(newGame);
+        return newGame.getId().toString();
     }
 
-    @GetMapping("games/{gameID}")
+    @GetMapping("games/{gameId}")
     public Object getGame(@PathVariable String gameId) {
-        // TODO - actually get and return game with id 'gameId'
-        return null;
+        return games.stream().filter(game -> game.getId().toString().equals(gameId)).findFirst();
     }
 
 }
