@@ -1,4 +1,4 @@
-package org.example.springboot_firstproject;
+package org.example.springboot_firstproject.service;
 
 public class GameCreationParamsDTO {
     private String gameType;
