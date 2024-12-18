@@ -27,11 +27,6 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
-    @GetMapping()
-    public Collection<String> getGamesIds(){ return gameCatalog.getGameIdentifiers(); }
-    @GetMapping("/all")
-    public Collection<Game> getGames(){ return gameCatalog.getGames(); }
-
     @PostMapping("/create")
     public ResponseEntity<?> createGame(@RequestBody @Validated GameCreationParamsDTO params) {
         try {
@@ -42,35 +37,5 @@ public class GameController {
             return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
         }
     }
-
-    @GetMapping("/{gameId}")
-    public Object getGame(@PathVariable String gameId) {
-        return gameCatalog.getGames().stream().filter(game -> game.getId().toString().equals(gameId)).findFirst();
-    }
-
-    @GetMapping("/ongoing")
-    public List<Map<String, String>> getOngoingGames() {
-        return gameCatalog.getGames().stream()
-                .filter(game -> game.getStatus() == GameStatus.ONGOING)
-                .map(game -> Map.of("id", game.getId().toString(), "game", game.getFactoryId()))
-                .collect(Collectors.toList());
-    }
-
-    @DeleteMapping("/delete/{gameId}")
-    public ResponseEntity<String> deleteGame(@PathVariable String gameId) {
-        try {
-            boolean isDeleted = gameCatalog.removeGame(gameId);
-            if (isDeleted) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Game successfully deleted : " + gameId);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Game not found: " + gameId);
-            }
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
-        }
-    }
-
-
-
 
 }
