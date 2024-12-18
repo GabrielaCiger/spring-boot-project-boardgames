@@ -30,7 +30,7 @@ public class TaquinPlugin implements GamePlugin {
 
     @Override
     public String getName(Locale locale) {
-        return messageSource.getMessage("game.taquin.title", null, locale);
+        return messageSource.getMessage("messages.taquin.title", null, locale);
     }
     @Override
     public Game createGame(OptionalInt playerCount, OptionalInt boardSize) {

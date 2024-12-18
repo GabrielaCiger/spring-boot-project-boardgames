@@ -22,9 +22,14 @@ public class GameCatalogController {
     private GameCatalog gameCatalog;
 
     @GetMapping()
-    public Collection<String> getGamesIds(){ return gameCatalog.getGameIdentifiers(); }
+    public Collection<String> getGamesIds() {
+        return gameCatalog.getGameIdentifiers();
+    }
+
     @GetMapping("/all")
-    public Collection<Game> getGames(){ return gameCatalog.getGames(); }
+    public Collection<Game> getGames() {
+        return gameCatalog.getGames();
+    }
 
     @GetMapping("/ongoing")
     public List<Map<String, String>> getOngoingGames() {

@@ -16,6 +16,7 @@ import java.util.OptionalInt;
 public class ConnectFourPlugin extends ConnectFourGameFactory implements GamePlugin {
 
     private final ConnectFourGameFactory gameFactory = new ConnectFourGameFactory();
+
     @Autowired
     private MessageSource messageSource;
 
@@ -29,7 +30,7 @@ public class ConnectFourPlugin extends ConnectFourGameFactory implements GamePlu
 
     @Override
     public String getName(Locale locale) {
-        return messageSource.getMessage("game.connect-four.title", null, locale);
+        return messageSource.getMessage("messages.connect-four.title", null, locale);
     }
     @Override
     public Game createGame(OptionalInt playerCount, OptionalInt boardSize) {
