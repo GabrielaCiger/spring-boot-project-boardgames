@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,7 +30,7 @@ public class GameCatalogController {
     public List<Map<String, String>> getOngoingGames() {
         return gameCatalog.getGames().stream()
                 .filter(game -> game.getStatus() == GameStatus.ONGOING)
-                .map(game -> Map.of("id", game.getId().toString(), "game", game.getFactoryId()))
+                .map(game -> Map.of("id", game.getId().toString(), "game", game.getFactoryId(), "status", game.getStatus().toString()))
                 .collect(Collectors.toList());
     }
 
@@ -38,7 +39,7 @@ public class GameCatalogController {
         try {
             boolean isDeleted = gameCatalog.removeGame(gameId);
             if (isDeleted) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Game successfully deleted : " + gameId);
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Game successfully deleted.");
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Game not found: " + gameId);
             }
@@ -49,6 +50,15 @@ public class GameCatalogController {
 
     @GetMapping("/{gameId}")
     public Object getGame(@PathVariable String gameId) {
-        return gameCatalog.getGames().stream().filter(game -> game.getId().toString().equals(gameId)).findFirst();
+        try {
+            Optional<Game> match = gameCatalog.getGames().stream().filter(game -> game.getId().toString().equals(gameId)).findFirst();
+            if (match.isPresent()) {
+                return ResponseEntity.status(HttpStatus.OK).body(match.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Game not found: " + gameId);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
+        }
     }
 }
