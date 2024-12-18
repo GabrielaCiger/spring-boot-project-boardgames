@@ -35,4 +35,8 @@ public class ConnectFourPlugin extends ConnectFourGameFactory implements GamePlu
     public Game createGame(OptionalInt playerCount, OptionalInt boardSize) {
         return gameFactory.createGame(defaultPlayerCount, defaultBoardSize);
     }
+    @Override
+    public String getGameIdentifier() {
+        return "ConnectFour";
+    }
 }

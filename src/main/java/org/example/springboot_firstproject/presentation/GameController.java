@@ -9,6 +9,7 @@ import org.example.springboot_firstproject.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,30 +27,30 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
-    private final Collection<Game> games = new ArrayList<>();
-
     @GetMapping()
     public Collection<String> getGamesIds(){ return gameCatalog.getGameIdentifiers(); }
+    @GetMapping("/all")
+    public Collection<Game> getGames(){ return gameCatalog.getGames(); }
 
-    @PostMapping()
-    public String createGame(@RequestBody GameCreationParamsDTO params) {
+    @PostMapping("/create")
+    public ResponseEntity<?> createGame(@RequestBody @Validated GameCreationParamsDTO params) {
         try {
             Game newGame = gameService.createGame(params.getGameType());
-            games.add(newGame);
-            return newGame.getId().toString();
+            gameCatalog.addGame(newGame);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Game created.");
         } catch (Exception e) {
-            return e.getMessage();
+            return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
         }
     }
 
     @GetMapping("/{gameId}")
     public Object getGame(@PathVariable String gameId) {
-        return games.stream().filter(game -> game.getId().toString().equals(gameId)).findFirst();
+        return gameCatalog.getGames().stream().filter(game -> game.getId().toString().equals(gameId)).findFirst();
     }
 
     @GetMapping("/ongoing")
     public List<Map<String, String>> getOngoingGames() {
-        return games.stream()
+        return gameCatalog.getGames().stream()
                 .filter(game -> game.getStatus() == GameStatus.ONGOING)
                 .map(game -> Map.of("id", game.getId().toString(), "game", game.getFactoryId()))
                 .collect(Collectors.toList());
@@ -57,12 +58,15 @@ public class GameController {
 
     @DeleteMapping("/delete/{gameId}")
     public ResponseEntity<String> deleteGame(@PathVariable String gameId) {
-        boolean isDeleted = games.removeIf(game -> game.getId().toString().equals(gameId));
-        if (isDeleted) {
-            return ResponseEntity.ok("Game deleted successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND) //404
-                    .body("Game with ID " + gameId + " not found");
+        try {
+            boolean isDeleted = gameCatalog.removeGame(gameId);
+            if (isDeleted) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Game successfully deleted : " + gameId);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Game not found: " + gameId);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
         }
     }
 

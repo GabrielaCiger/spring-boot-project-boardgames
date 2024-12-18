@@ -8,6 +8,7 @@ import java.util.Locale;
 import java.util.OptionalInt;
 
 public interface GamePlugin {
+    @NotNull String getGameIdentifier();
     @NotBlank String getName(Locale locale);
     @NotNull Game createGame(
             OptionalInt playerCount,
