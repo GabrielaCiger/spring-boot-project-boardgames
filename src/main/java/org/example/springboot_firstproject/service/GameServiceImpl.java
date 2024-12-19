@@ -1,10 +1,7 @@
 package org.example.springboot_firstproject.service;
 
 import fr.le_campus_numerique.square_games.engine.Game;
-import org.example.springboot_firstproject.service.plugin.ConnectFourPlugin;
 import org.example.springboot_firstproject.service.plugin.GamePlugin;
-import org.example.springboot_firstproject.service.plugin.TaquinPlugin;
-import org.example.springboot_firstproject.service.plugin.TicTacToePlugin;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

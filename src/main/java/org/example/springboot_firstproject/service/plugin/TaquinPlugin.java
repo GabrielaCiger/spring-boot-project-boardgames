@@ -2,11 +2,9 @@ package org.example.springboot_firstproject.service.plugin;
 
 import fr.le_campus_numerique.square_games.engine.Game;
 import fr.le_campus_numerique.square_games.engine.taquin.TaquinGameFactory;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
@@ -34,6 +32,9 @@ public class TaquinPlugin implements GamePlugin {
     }
     @Override
     public Game createGame(OptionalInt playerCount, OptionalInt boardSize) {
+        if (playerCount.isPresent() && boardSize.isPresent()) {
+            return gameFactory.createGame(playerCount.getAsInt(), boardSize.getAsInt());
+        }
         return gameFactory.createGame(defaultPlayerCount, defaultBoardSize);
     }
     @Override

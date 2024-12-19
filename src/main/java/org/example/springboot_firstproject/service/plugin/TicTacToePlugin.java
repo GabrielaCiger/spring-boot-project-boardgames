@@ -31,6 +31,9 @@ public class TicTacToePlugin implements GamePlugin {
     }
     @Override
     public Game createGame(OptionalInt playerCount, OptionalInt boardSize) {
+        if (playerCount.isPresent() && boardSize.isPresent()) {
+            return gameFactory.createGame(playerCount.getAsInt(), boardSize.getAsInt());
+        }
         return gameFactory.createGame(defaultPlayerCount, defaultBoardSize);
     }
     @Override

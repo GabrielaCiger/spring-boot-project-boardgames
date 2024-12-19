@@ -1,10 +1,7 @@
 package org.example.springboot_firstproject.service;
 
 import fr.le_campus_numerique.square_games.engine.Game;
-import org.example.springboot_firstproject.service.plugin.ConnectFourPlugin;
 import org.example.springboot_firstproject.service.plugin.GamePlugin;
-import org.example.springboot_firstproject.service.plugin.TaquinPlugin;
-import org.example.springboot_firstproject.service.plugin.TicTacToePlugin;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -20,10 +17,10 @@ public class GameCatalogImpl implements GameCatalog {
     }
 
     @Override
-    public Collection<String> getGameIdentifiers() {
+    public Collection<String> getGameIdentifiers(Locale locale) {
         List<String> gameIdentifiers = new ArrayList<>();
         for (GamePlugin plugin : gamePlugins) {
-            gameIdentifiers.add(plugin.getName(Locale.getDefault()));
+                gameIdentifiers.add(plugin.getName(locale));
         }
         return gameIdentifiers;
     }
