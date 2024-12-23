@@ -2,10 +2,12 @@ package org.example.springboot_firstproject.data.access;
 
 import fr.le_campus_numerique.square_games.engine.Game;
 import fr.le_campus_numerique.square_games.engine.GameStatus;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Repository
 public class InMemoryGameDao implements GameDao {
 
     private final List<Game> games = new ArrayList<>();
