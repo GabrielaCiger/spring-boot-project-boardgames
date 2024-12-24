@@ -1,10 +1,15 @@
 package org.example.springboot_firstproject.service.user;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.util.UUID;
 
-//Soy POJO
+//Soy POJO :-)
+//@Entity
 public class GameUser {
 
+//    @Id
     private UUID id;
     private String username;
     private String password;

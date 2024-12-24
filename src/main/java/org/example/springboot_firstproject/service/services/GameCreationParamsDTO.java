@@ -1,6 +1,5 @@
-package org.example.springboot_firstproject.service;
+package org.example.springboot_firstproject.service.services;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

@@ -1,14 +1,12 @@
-package org.example.springboot_firstproject.service;
+package org.example.springboot_firstproject.service.services;
 
 import fr.le_campus_numerique.square_games.engine.Game;
-import fr.le_campus_numerique.square_games.engine.GameStatus;
 import org.example.springboot_firstproject.data.access.GameDao;
 import org.example.springboot_firstproject.service.plugin.GamePlugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class GameServiceImpl implements GameService {

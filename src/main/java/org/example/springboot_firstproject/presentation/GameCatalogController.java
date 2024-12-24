@@ -1,5 +1,5 @@
 package org.example.springboot_firstproject.presentation;
-import org.example.springboot_firstproject.service.GameCatalog;
+import org.example.springboot_firstproject.service.services.GameCatalog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

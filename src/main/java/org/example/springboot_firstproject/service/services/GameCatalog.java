@@ -1,4 +1,4 @@
-package org.example.springboot_firstproject.service;
+package org.example.springboot_firstproject.service.services;
 import java.util.Collection;
 import java.util.Locale;
 

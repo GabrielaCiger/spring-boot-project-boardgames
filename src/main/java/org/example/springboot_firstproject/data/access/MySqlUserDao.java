@@ -1,6 +1,5 @@
 package org.example.springboot_firstproject.data.access;
 
-import org.apache.catalina.User;
 import org.example.springboot_firstproject.service.user.GameUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
 @Repository
 public class MySqlUserDao implements GameUserDao {
@@ -46,19 +45,19 @@ public class MySqlUserDao implements GameUserDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return users;
         }
+        return users;
     }
 
     @Override
-    public GameUser getUserById(UUID id) {
+    public Optional<GameUser> getUserById(String id) {
         GameUser user = null;
         Connection con = null;
         try {
             con = dbConnection.getConnection();
             String request = "select * from users where id = ?";
             PreparedStatement ps = con.prepareStatement(request);
-            ps.setString(1, id.toString());
+            ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -76,12 +75,12 @@ public class MySqlUserDao implements GameUserDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return user;
         }
+        return Optional.ofNullable(user);
     }
 
     @Override
-    public GameUser getUserByUsername(String username) {
+    public Optional<GameUser> getUserByUsername(String username) {
         GameUser user = null;
         Connection con = null;
         try {
@@ -106,12 +105,12 @@ public class MySqlUserDao implements GameUserDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return user;
         }
+        return Optional.ofNullable(user);
     }
 
     @Override
-    public GameUser createUser(GameUser user) {
+    public boolean createUser(GameUser user) {
         Connection con = null;
         GameUser newUser = null;
         try {
@@ -125,7 +124,7 @@ public class MySqlUserDao implements GameUserDao {
             int affectedRows = ps.executeUpdate();
 
             if (affectedRows > 0) {
-                return user;
+                return true;
             }
 
         } catch (SQLException e) {
@@ -139,11 +138,11 @@ public class MySqlUserDao implements GameUserDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return false;
     }
 
     @Override
-    public GameUser updateUser(GameUser user) {
+    public boolean updateUser(GameUser user) {
         Connection con = null;
         try {
             con = dbConnection.getConnection();
@@ -155,7 +154,7 @@ public class MySqlUserDao implements GameUserDao {
             ps.setString(3, user.getId().toString());
             int affectedRows = ps.executeUpdate();
             if (affectedRows > 0) {
-                return user;
+                return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -168,11 +167,11 @@ public class MySqlUserDao implements GameUserDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return false;
     }
 
     @Override
-    public void deleteUser(int id) {
+    public boolean deleteUser(String id) {
         Connection con = null;
         try {
             con = dbConnection.getConnection();
@@ -181,6 +180,7 @@ public class MySqlUserDao implements GameUserDao {
             ps = con.prepareStatement(request);
             ps.setString(1, String.valueOf(id));
             ps.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -192,5 +192,6 @@ public class MySqlUserDao implements GameUserDao {
                 e.printStackTrace();
             }
         }
+        return false;
     }
 }

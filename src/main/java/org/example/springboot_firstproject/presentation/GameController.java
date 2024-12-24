@@ -1,8 +1,8 @@
 package org.example.springboot_firstproject.presentation;
 
 import fr.le_campus_numerique.square_games.engine.Game;
-import org.example.springboot_firstproject.service.GameCreationParamsDTO;
-import org.example.springboot_firstproject.service.GameService;
+import org.example.springboot_firstproject.service.services.GameCreationParamsDTO;
+import org.example.springboot_firstproject.service.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

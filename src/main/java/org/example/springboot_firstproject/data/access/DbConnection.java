@@ -23,10 +23,9 @@ public class DbConnection {
         return this.connection;
     }
 
-    public Connection closeConnection() throws SQLException {
+    public void closeConnection() throws SQLException {
         if (this.connection != null && !this.connection.isClosed()) {
             this.connection.close();
         }
-        return this.connection;
     }
 }

@@ -1,4 +1,4 @@
-package org.example.springboot_firstproject.service;
+package org.example.springboot_firstproject.service.services;
 
 import org.example.springboot_firstproject.service.plugin.GamePlugin;
 import org.springframework.stereotype.Service;

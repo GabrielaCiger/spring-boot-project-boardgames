@@ -1,7 +1,6 @@
-package org.example.springboot_firstproject.service;
+package org.example.springboot_firstproject.service.services;
 
 import fr.le_campus_numerique.square_games.engine.Game;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Collection;
 import java.util.List;
