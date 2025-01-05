@@ -2,28 +2,36 @@ package org.example.springboot_firstproject.service.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.util.UUID;
 
 //Soy POJO :-)
-//@Entity
+@Entity
+@Table(name = "users")
 public class GameUser {
 
-//    @Id
-    private UUID id;
+    @Id
+    private Long id;
+
+    private UUID userId;
     private String username;
     private String password;
 
     public GameUser() {
-        this.id = UUID.randomUUID();
+        this.userId = UUID.randomUUID();
     }
 
-    private UUID createUniqueId() {
-        return UUID.randomUUID();
-    }
-
-    public UUID getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public UUID getUserId() {
+        return userId;
     }
 
     public String getUsername() {

@@ -1,46 +1,40 @@
 package org.example.springboot_firstproject.service.services;
-
-import org.example.springboot_firstproject.data.access.GameUserDao;
 import org.example.springboot_firstproject.service.user.GameUser;
+import org.example.springboot_firstproject.service.user.GameUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    GameUserDao gameUserDao;
+    GameUserRepository gameUserRepository;
 
     @Override
-    public List<GameUser> findAll() {
-        return gameUserDao.getAllUsers();
+    public Iterable<GameUser> findAll() {
+        return gameUserRepository.findAll();
     }
 
     @Override
     public boolean createUser(GameUser gameUser) {
-        return gameUserDao.createUser(gameUser);
+        //JPA Spring will generate this method automatically
+        return gameUserRepository.save(gameUser) != null;
     }
 
     @Override
     public Optional<GameUser> getUserById(String id) {
-        return gameUserDao.getUserById(id);
+        return gameUserRepository.findById(id);
     }
 
     @Override
-    public Optional<GameUser> getUserByUsername(String username) {
-        return gameUserDao.getUserByUsername(username);
+    public void deleteUserByUserId(UUID id) {
+       gameUserRepository.deleteGameUserByUserId(id);
     }
 
     @Override
-    public boolean deleteUserById(String id) {
-       return gameUserDao.deleteUser(id);
-    }
-
-    @Override
-    public boolean updateUser(GameUser gameUser) {
-        return gameUserDao.updateUser(gameUser);
+    public int updateUser(String userId, GameUser gameUser) {
+        return gameUserRepository.updateGameUserByUserId(gameUser.getUsername(), gameUser.getPassword(), userId);
     }
 }

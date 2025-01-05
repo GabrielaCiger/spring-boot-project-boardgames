@@ -4,10 +4,7 @@ import org.example.springboot_firstproject.service.user.GameUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,178 +17,100 @@ public class MySqlUserDao implements GameUserDao {
 
     public MySqlUserDao() {}
 
+    // Helper method to simplify connection handling
+    private Connection getConnection() throws SQLException {
+        return dbConnection.getConnection();
+    }
+
+    // Helper method to execute updates (INSERT, UPDATE, DELETE)
+    private boolean executeUpdate(String query, String... params) {
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            for (int i = 0; i < params.length; i++) {
+                ps.setString(i + 1, params[i]);
+            }
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Helper method to map a ResultSet to a GameUser object
+    private GameUser mapResultSetToGameUser(ResultSet rs) throws SQLException {
+        GameUser user = new GameUser();
+        user.setId(rs.getLong("id"));
+        user.setUsername(rs.getString("username"));
+        user.setPassword(rs.getString("password"));
+        return user;
+    }
+
+    /* * CRUD - SQL REQUESTS */
+
     @Override
     public List<GameUser> getAllUsers() {
+        String query = "SELECT * FROM users";
         List<GameUser> users = new ArrayList<>();
-        Connection con = null;
-        try {
-            con = dbConnection.getConnection();
-            String request = "select * from users";
-            ResultSet rs = con.createStatement().executeQuery(request);
+
+        try (Connection con = getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                GameUser user = new GameUser();
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
+                GameUser user = mapResultSetToGameUser(rs);
                 users.add(user);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (con != null) {
-                    dbConnection.closeConnection();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return users;
     }
 
     @Override
     public Optional<GameUser> getUserById(String id) {
-        GameUser user = null;
-        Connection con = null;
-        try {
-            con = dbConnection.getConnection();
-            String request = "select * from users where id = ?";
-            PreparedStatement ps = con.prepareStatement(request);
-            ps.setString(1, id);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                user = new GameUser();
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (con != null) {
-                    dbConnection.closeConnection();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return Optional.ofNullable(user);
+        String query = "SELECT * FROM users WHERE userId = ?";
+        return getUserBy(query, id);
     }
 
     @Override
     public Optional<GameUser> getUserByUsername(String username) {
-        GameUser user = null;
-        Connection con = null;
-        try {
-            con = dbConnection.getConnection();
-            String request = "select * from users where username = ?";
-            PreparedStatement ps = con.prepareStatement(request);
-            ps.setString(1, username);
-            ResultSet rs = ps.executeQuery();
+        String query = "SELECT * FROM users WHERE username = ?";
+        return getUserBy(query, username);
+    }
 
-            if (rs.next()) {
-                user = new GameUser();
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
+    private Optional<GameUser> getUserBy(String query, String param) {
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setString(1, param);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapResultSetToGameUser(rs));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (con != null) {
-                    dbConnection.closeConnection();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
-        return Optional.ofNullable(user);
+        return Optional.empty();
     }
 
     @Override
     public boolean createUser(GameUser user) {
-        Connection con = null;
-        GameUser newUser = null;
-        try {
-            con = dbConnection.getConnection();
-            String request = "INSERT INTO users (id, username, password) VALUES (?, ?, ?)";
-            PreparedStatement ps = con.prepareStatement(request);
-            ps = con.prepareStatement(request);
-            ps.setString(1, user.getId().toString());
-            ps.setString(2, user.getUsername());
-            ps.setString(3, user.getPassword());
-            int affectedRows = ps.executeUpdate();
-
-            if (affectedRows > 0) {
-                return true;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (con != null) {
-                    dbConnection.closeConnection();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
+        String query = "INSERT INTO users (userId, username, password) VALUES (?, ?, ?)";
+        return executeUpdate(query, user.getUserId().toString(), user.getUsername(), user.getPassword());
     }
 
     @Override
     public boolean updateUser(GameUser user) {
-        Connection con = null;
-        try {
-            con = dbConnection.getConnection();
-            String request = "UPDATE users SET username = ?, password = ? WHERE id = ?";
-            PreparedStatement ps = con.prepareStatement(request);
-            ps = con.prepareStatement(request);
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
-            ps.setString(3, user.getId().toString());
-            int affectedRows = ps.executeUpdate();
-            if (affectedRows > 0) {
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (con != null) {
-                    dbConnection.closeConnection();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
+        String query = "UPDATE users SET username = ?, password = ? WHERE userId = ?";
+        return executeUpdate(query, user.getUsername(), user.getPassword(), user.getUserId().toString());
     }
 
     @Override
     public boolean deleteUser(String id) {
-        Connection con = null;
-        try {
-            con = dbConnection.getConnection();
-            String request = "DELETE FROM users WHERE id = ?";
-            PreparedStatement ps = con.prepareStatement(request);
-            ps = con.prepareStatement(request);
-            ps.setString(1, String.valueOf(id));
-            ps.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (con != null) {
-                    dbConnection.closeConnection();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return false;
+        String query = "DELETE FROM users WHERE userId = ?";
+        return executeUpdate(query, id);
     }
 }
