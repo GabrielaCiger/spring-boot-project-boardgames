@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
-import java.util.UUID;
+
 
 
 @RestController
@@ -23,27 +23,23 @@ public class UserController {
         return userService.findAll();
     }
     @PostMapping()
-    public ResponseEntity<String> createUser(@RequestBody @Validated UserCreationParamsDTO params) {
+    public ResponseEntity<?> createUser(@RequestBody @Validated UserCreationParamsDTO params) {
         try {
            GameUser user = new GameUser();
-           user.setUsername(params.getUserName());
+           user.setUsername(params.getUsername());
            user.setPassword(params.getPassword());
-           boolean isCreated = userService.createUser(user);
-           if (isCreated) {
-               return ResponseEntity.ok(user.toString());
-           } else {
-               return ResponseEntity.badRequest().build();
-           }
+           userService.createUser(user);
+           return ResponseEntity.ok(user);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
         }
     }
     @GetMapping("/{id}")
-    public Object getUser(@PathVariable UUID id) {
+    public ResponseEntity<?> getUser(@PathVariable int id) {
         try {
-            Optional<GameUser> matchById = userService.getUserById(id.toString());
+            Optional<GameUser> matchById = userService.getUserById(id);
             if (matchById.isPresent()) {
-                return ResponseEntity.status(HttpStatus.OK);
+                return ResponseEntity.status(HttpStatus.OK).body(matchById.get());
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found: " + id);
             }
@@ -52,11 +48,25 @@ public class UserController {
         }
     }
 
+//    @GetMapping("/{username}")
+//    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+//        try {
+//            Optional<GameUser> matchByUsername = userService.getUserByUsername(username);
+//            if (matchByUsername.isPresent()) {
+//                return ResponseEntity.status(HttpStatus.OK).body(matchByUsername.get());
+//            } else {
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found: " + username);
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
+//        }
+//    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable UUID id) {
+    public ResponseEntity<String> deleteUser(@PathVariable int id) {
         try {
-            userService.deleteUserByUserId(id);
-            boolean isNotDeleted = userService.getUserById(id.toString()).isPresent();
+            userService.deleteUserById(id);
+            boolean isNotDeleted = userService.getUserById(id).isPresent();
             if (!isNotDeleted) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User successfully deleted.");
             } else {
@@ -67,17 +77,15 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/{userId}")
-    public ResponseEntity<String> updateUser(@PathVariable String userId, @RequestBody GameUser user) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable int id, @RequestBody String[] toUpdate) {
         try {
-           int updated = userService.updateUser(userId, user);
-           if (updated > 0) {
-               return ResponseEntity.ok(user.toString());
-           } else {
-               return ResponseEntity.badRequest().build();
-           }
+            userService.updateUser(id, toUpdate[0], toUpdate[1]);
+            Optional<GameUser> user = userService.getUserById(id);
+            return ResponseEntity.ok(user);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
         }
     }
+
 }

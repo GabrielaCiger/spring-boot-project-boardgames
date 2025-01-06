@@ -1,8 +1,7 @@
 package org.example.springboot_firstproject.service.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.UUID;
 
@@ -11,28 +10,20 @@ import java.util.UUID;
 @Table(name = "users")
 public class GameUser {
 
+    //Source : https://www.baeldung.com/jpa-get-auto-generated-id
+    //Source 2 : https://www.baeldung.com/jpa-strategies-when-set-primary-key
+    //This strategy tells JPA that the database is responsible for generating
+    //the primary key using its auto-increment feature.
     @Id
-    private Long id;
+    @GeneratedValue
+    private int id;
 
-    private UUID userId;
     private String username;
     private String password;
 
-    public GameUser() {
-        this.userId = UUID.randomUUID();
-    }
+    public int getId() { return id; }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public UUID getUserId() {
-        return userId;
-    }
+    public void setId(int id) { this.id = id; }
 
     public String getUsername() {
         return username;

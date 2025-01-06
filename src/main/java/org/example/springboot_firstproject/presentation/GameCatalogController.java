@@ -16,6 +16,4 @@ public class GameCatalogController {
     public Collection<String> getGamesIds(@RequestHeader(name = "Accept-Language", required = false, defaultValue = "fr-FR") Locale locale) {
         return gameCatalog.getGameIdentifiers(locale);
     }
-
-
 }

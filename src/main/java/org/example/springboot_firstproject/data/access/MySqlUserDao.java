@@ -22,31 +22,6 @@ public class MySqlUserDao implements GameUserDao {
         return dbConnection.getConnection();
     }
 
-    // Helper method to execute updates (INSERT, UPDATE, DELETE)
-    private boolean executeUpdate(String query, String... params) {
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
-
-            for (int i = 0; i < params.length; i++) {
-                ps.setString(i + 1, params[i]);
-            }
-
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    // Helper method to map a ResultSet to a GameUser object
-    private GameUser mapResultSetToGameUser(ResultSet rs) throws SQLException {
-        GameUser user = new GameUser();
-        user.setId(rs.getLong("id"));
-        user.setUsername(rs.getString("username"));
-        user.setPassword(rs.getString("password"));
-        return user;
-    }
-
     /* * CRUD - SQL REQUESTS */
 
     @Override
@@ -59,7 +34,10 @@ public class MySqlUserDao implements GameUserDao {
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                GameUser user = mapResultSetToGameUser(rs);
+                GameUser user = new GameUser();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -69,25 +47,41 @@ public class MySqlUserDao implements GameUserDao {
     }
 
     @Override
-    public Optional<GameUser> getUserById(String id) {
+    public Optional<GameUser> getUserById(int id) {
         String query = "SELECT * FROM users WHERE userId = ?";
-        return getUserBy(query, id);
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    GameUser user = new GameUser();
+                    user.setId(rs.getInt("id"));
+                    user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    return Optional.of(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
 
     @Override
     public Optional<GameUser> getUserByUsername(String username) {
         String query = "SELECT * FROM users WHERE username = ?";
-        return getUserBy(query, username);
-    }
-
-    private Optional<GameUser> getUserBy(String query, String param) {
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
-            ps.setString(1, param);
+            ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return Optional.of(mapResultSetToGameUser(rs));
+                    GameUser user = new GameUser();
+                    user.setId(rs.getInt("id"));
+                    user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    return Optional.of(user);
                 }
             }
         } catch (SQLException e) {
@@ -98,19 +92,46 @@ public class MySqlUserDao implements GameUserDao {
 
     @Override
     public boolean createUser(GameUser user) {
-        String query = "INSERT INTO users (userId, username, password) VALUES (?, ?, ?)";
-        return executeUpdate(query, user.getUserId().toString(), user.getUsername(), user.getPassword());
+        String query = "INSERT INTO users (username, password) VALUES (?, ?)";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
     public boolean updateUser(GameUser user) {
-        String query = "UPDATE users SET username = ?, password = ? WHERE userId = ?";
-        return executeUpdate(query, user.getUsername(), user.getPassword(), user.getUserId().toString());
+        String query = "UPDATE users SET username = ?, password = ? WHERE id = ?";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setInt(3, user.getId());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
-    public boolean deleteUser(String id) {
-        String query = "DELETE FROM users WHERE userId = ?";
-        return executeUpdate(query, id);
+    public boolean deleteUser(int id) {
+        String query = "DELETE FROM users WHERE id = ?";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

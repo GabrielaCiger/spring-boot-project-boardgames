@@ -7,8 +7,9 @@ import java.util.UUID;
 
 public interface UserService {
     Iterable<GameUser> findAll();
-    boolean createUser(GameUser gameUser);
-    Optional<GameUser> getUserById(String id);
-    void deleteUserByUserId(UUID id);
-    int updateUser(String userId, GameUser gameUser);
+    void createUser(GameUser gameUser);
+    Optional<GameUser> getUserById(int id);
+    Optional<GameUser> getUserByUsername(String username);
+    void deleteUserById(int id);
+    void updateUser(int id, String newUsername, String newPassword);
 }

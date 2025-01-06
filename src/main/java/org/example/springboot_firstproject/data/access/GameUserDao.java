@@ -5,9 +5,9 @@ import java.util.Optional;
 
 public interface GameUserDao {
     List<GameUser> getAllUsers();
-    Optional<GameUser> getUserById(String id);
+    Optional<GameUser> getUserById(int id);
     Optional<GameUser> getUserByUsername(String username);
     boolean createUser(GameUser user);
     boolean updateUser(GameUser user);
-    boolean deleteUser(String id);
+    boolean deleteUser(int id);
 }
