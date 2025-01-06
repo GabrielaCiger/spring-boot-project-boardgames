@@ -34,7 +34,7 @@ public class UserController {
             return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
         }
     }
-    @GetMapping("/{id}")
+    @GetMapping("/by-id/{id}")
     public ResponseEntity<?> getUser(@PathVariable int id) {
         try {
             Optional<GameUser> matchById = userService.getUserById(id);
@@ -48,19 +48,19 @@ public class UserController {
         }
     }
 
-//    @GetMapping("/{username}")
-//    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
-//        try {
-//            Optional<GameUser> matchByUsername = userService.getUserByUsername(username);
-//            if (matchByUsername.isPresent()) {
-//                return ResponseEntity.status(HttpStatus.OK).body(matchByUsername.get());
-//            } else {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found: " + username);
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
-//        }
-//    }
+    @GetMapping("/by-username/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+        try {
+            Optional<GameUser> matchByUsername = userService.getUserByUsername(username);
+            if (matchByUsername.isPresent()) {
+                return ResponseEntity.status(HttpStatus.OK).body(matchByUsername.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found: " + username);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
+        }
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
