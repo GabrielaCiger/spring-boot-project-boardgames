@@ -1,0 +1,6 @@
+use springbootdb;
+insert into users (id, username, password) VALUES (1, 'Toto', 'password');
+insert into users (id, username, password) VALUES (2, 'RickAstley', 'getricked');
+insert into users (id, username, password) VALUES (3, 'PedroPascal', 'pedro123');
+insert into users (id, username, password) VALUES (4, 'Nosferatu', 'bloodisyummy');
+insert into users (id, username, password) VALUES (5, 'KnockKnock', 'whosthere');
