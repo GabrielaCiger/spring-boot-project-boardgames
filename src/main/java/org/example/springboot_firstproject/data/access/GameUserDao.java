@@ -1,5 +1,5 @@
 package org.example.springboot_firstproject.data.access;
-import org.example.springboot_firstproject.service.user.GameUser;
+import org.example.springboot_firstproject.data.access.user.GameUser;
 import java.util.List;
 import java.util.Optional;
 

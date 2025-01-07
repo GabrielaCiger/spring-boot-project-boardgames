@@ -1,4 +1,4 @@
-package org.example.springboot_firstproject.service.user;
+package org.example.springboot_firstproject.data.access.user;
 
 import jakarta.persistence.*;
 import org.springframework.boot.context.properties.bind.DefaultValue;

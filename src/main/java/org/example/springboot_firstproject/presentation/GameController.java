@@ -21,7 +21,7 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> createGame(@RequestBody @Validated GameCreationParamsDTO params) {
         try {
             Game newGame = gameService.createGame(params.getGameType());
@@ -32,17 +32,18 @@ public class GameController {
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public Collection<Game> getGames() {
         return gameService.getGames();
     }
 
-    @GetMapping("/ongoing")
-    public List<Map<String, String>> getOngoingGames() {
-        return gameService.getOngoingGames();
-    }
+    //TODO: add to Params to GET /
+//    @GetMapping("/ongoing")
+//    public List<Map<String, String>> getOngoingGames() {
+//        return gameService.getOngoingGames();
+//    }
 
-    @DeleteMapping("/delete/{gameId}")
+    @DeleteMapping("/{gameId}")
     public ResponseEntity<String> deleteGame(@PathVariable String gameId) {
         try {
             boolean isDeleted = gameService.removeGame(gameId);

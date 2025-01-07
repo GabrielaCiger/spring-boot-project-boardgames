@@ -1,9 +1,8 @@
 package org.example.springboot_firstproject.service.services;
 
-import org.example.springboot_firstproject.service.user.GameUser;
+import org.example.springboot_firstproject.data.access.user.GameUser;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public interface UserService {
     Iterable<GameUser> findAll();

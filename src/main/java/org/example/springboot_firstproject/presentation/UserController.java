@@ -1,7 +1,7 @@
 package org.example.springboot_firstproject.presentation;
 import org.example.springboot_firstproject.service.services.UserCreationParamsDTO;
 import org.example.springboot_firstproject.service.services.UserService;
-import org.example.springboot_firstproject.service.user.GameUser;
+import org.example.springboot_firstproject.data.access.user.GameUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
