@@ -8,14 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/games")
+@RequestMapping("/game")
 public class GameController {
 
     @Autowired
@@ -38,10 +35,6 @@ public class GameController {
     }
 
     //TODO: add to Params to GET /
-//    @GetMapping("/ongoing")
-//    public List<Map<String, String>> getOngoingGames() {
-//        return gameService.getOngoingGames();
-//    }
 
     @DeleteMapping("/{gameId}")
     public ResponseEntity<String> deleteGame(@PathVariable String gameId) {
