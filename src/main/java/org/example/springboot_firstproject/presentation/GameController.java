@@ -23,9 +23,11 @@ public class GameController {
         try {
             Game newGame = gameService.createGame(params.getGameType());
             gameService.addGame(newGame);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Game created.");
+            return ResponseEntity.status(HttpStatus.CREATED).body(newGame);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid input: " + e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unknown error: " + e.getMessage());
         }
     }
 

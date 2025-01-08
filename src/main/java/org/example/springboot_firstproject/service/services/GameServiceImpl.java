@@ -2,6 +2,9 @@ package org.example.springboot_firstproject.service.services;
 
 import fr.le_campus_numerique.square_games.engine.Game;
 import org.example.springboot_firstproject.data.access.GameDao;
+import org.example.springboot_firstproject.gametodatabase.GameRepository;
+import org.example.springboot_firstproject.gametodatabase.PlayerRepository;
+import org.example.springboot_firstproject.gametodatabase.TokenRepository;
 import org.example.springboot_firstproject.service.plugin.GamePlugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,9 @@ public class GameServiceImpl implements GameService {
     GameDao gameDao;
 
     private final Map<String, GamePlugin> gamePlugins = new HashMap<>();
+    private GameRepository gameRepository;
+    private PlayerRepository playerRepository;
+    private TokenRepository tokenRepository;
 
 
     public GameServiceImpl(List<GamePlugin> plugins) {
