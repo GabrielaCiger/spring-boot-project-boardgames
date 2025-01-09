@@ -1,11 +1,7 @@
 package org.example.springboot_firstproject.data.access;
-
 import fr.le_campus_numerique.square_games.engine.Game;
-import fr.le_campus_numerique.square_games.engine.GameStatus;
 import org.springframework.stereotype.Repository;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryGameDao implements GameDao {
@@ -30,13 +26,5 @@ public class InMemoryGameDao implements GameDao {
     @Override
     public boolean delete(String gameId) {
         return games.removeIf(game -> game.getId().toString().equals(gameId));
-    }
-
-    @Override
-    public List<Map<String, String>> getOngoingGames() {
-        return games.stream()
-                .filter(game -> game.getStatus() == GameStatus.ONGOING)
-                .map(game -> Map.of("id", game.getId().toString(), "game", game.getFactoryId(), "status", game.getStatus().toString()))
-                .collect(Collectors.toList());
     }
 }

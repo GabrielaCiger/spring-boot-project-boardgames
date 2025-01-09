@@ -2,6 +2,8 @@ package org.example.springboot_firstproject.gametodatabase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.UUID;
+
 @Repository
-public interface GameRepository extends JpaRepository<GameEntity, Long> {
+public interface GameRepository extends JpaRepository<GameEntity, UUID> {
 }

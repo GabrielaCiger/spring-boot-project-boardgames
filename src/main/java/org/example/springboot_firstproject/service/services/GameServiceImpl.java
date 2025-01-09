@@ -4,6 +4,7 @@ import fr.le_campus_numerique.square_games.engine.Game;
 import org.example.springboot_firstproject.data.access.GameDao;
 import org.example.springboot_firstproject.gametodatabase.GameRepository;
 import org.example.springboot_firstproject.gametodatabase.PlayerRepository;
+import org.example.springboot_firstproject.gametodatabase.TokenEntity;
 import org.example.springboot_firstproject.gametodatabase.TokenRepository;
 import org.example.springboot_firstproject.service.plugin.GamePlugin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +57,10 @@ public class GameServiceImpl implements GameService {
     public Optional<Game> getGame(String gameId) {
         return gameDao.findById(gameId);
     }
+
     @Override
-    public List<Map<String, String>> getOngoingGames() {
-        return gameDao.getOngoingGames();
+    public Game createGameWithIds(UUID gameId, int boardSize, List<UUID> playerIds, List<TokenEntity> initialTokens) {
+        return null;
     }
 }
 

@@ -1,6 +1,9 @@
 package org.example.springboot_firstproject.gametodatabase;
 
+import fr.le_campus_numerique.square_games.engine.Token;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,20 +16,29 @@ public class GameEntity {
         @GeneratedValue(strategy = GenerationType.AUTO)
         private UUID id;
 
-        private int boardSize;
+        private @NotNull String factoryId;
+        private @Positive int boardSize;
 
-        @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+        @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
         private List<PlayerEntity> players = new ArrayList<>();
 
-        @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+        @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
         private List<TokenEntity> tokens = new ArrayList<>();
 
-        @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+        @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
         private List<TokenEntity> remainingTokens = new ArrayList<>();
 
         private UUID currentPlayerId;
 
         public GameEntity() {}
+
+        public @NotNull String getFactoryId() {
+                return factoryId;
+        }
+
+        public void setFactoryId(@NotNull String factoryId) {
+                this.factoryId = factoryId;
+        }
 
         public UUID getId() {
                 return id;
@@ -58,5 +70,17 @@ public class GameEntity {
 
         public void setTokens(List<TokenEntity> tokens) {
                 this.tokens = tokens;
+        }
+        public List<TokenEntity> getRemainingTokens() {
+                return remainingTokens;
+        }
+        public void setRemainingTokens(List<TokenEntity> remainingTokens) {
+                this.remainingTokens = remainingTokens;
+        }
+        public UUID getCurrentPlayerId() {
+                return currentPlayerId;
+        }
+        public void setCurrentPlayerId(UUID currentPlayerId) {
+                this.currentPlayerId = currentPlayerId;
         }
 }

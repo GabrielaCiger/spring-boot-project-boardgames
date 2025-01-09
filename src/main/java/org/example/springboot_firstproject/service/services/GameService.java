@@ -11,7 +11,6 @@ public interface GameService {
     boolean addGame(Game game);
     boolean removeGame(String gameId);
     Optional<Game> getGame(String gameId);
-    List<Map<String, String>> getOngoingGames();
     Game createGameWithIds(UUID gameId, int boardSize, List<UUID> playerIds, List<TokenEntity> initialTokens);
 }
 

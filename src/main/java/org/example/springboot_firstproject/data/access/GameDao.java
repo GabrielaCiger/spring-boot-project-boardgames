@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -16,5 +14,4 @@ public interface GameDao {
     Optional<Game> findById(@NotNull String gameId);
     @NotNull boolean addGame(@NotNull Game game);
     boolean delete(@NotNull String gameId);
-    @NotNull List<Map<String, String>> getOngoingGames();
 }
