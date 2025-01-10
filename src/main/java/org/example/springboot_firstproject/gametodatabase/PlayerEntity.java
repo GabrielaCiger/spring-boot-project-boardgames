@@ -6,12 +6,11 @@ import java.util.UUID;
 
 @Entity
 public class PlayerEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "game_id")
     private GameEntity game;
 
     public UUID getId() {

@@ -13,14 +13,13 @@ import java.util.UUID;
 public class GameEntity {
 
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
         private UUID id;
 
         private @NotNull String factoryId;
         private @Positive int boardSize;
         private @NotNull GameStatus gameStatus;
 
-        @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+        @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
         private List<PlayerEntity> players = new ArrayList<>();
 
         @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

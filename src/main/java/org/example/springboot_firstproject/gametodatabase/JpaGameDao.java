@@ -99,8 +99,9 @@ public class JpaGameDao implements GameDao {
 
     private TokenEntity createTokenEntity(Token token) {
         TokenEntity tokenEntity = new TokenEntity();
-        tokenEntity.setId(token.getOwnerId().orElse(null));
-        if (tokenEntity.getOwnerId() != null) {
+        tokenEntity.setId(UUID.randomUUID());
+        tokenEntity.setOwnerId(token.getOwnerId().orElse(null));
+        if (token.getPosition() != null) {
             tokenEntity.setX(token.getPosition().x());
             tokenEntity.setY(token.getPosition().y());
         }
