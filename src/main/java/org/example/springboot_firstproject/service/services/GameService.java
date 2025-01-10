@@ -8,9 +8,8 @@ import java.util.*;
 public interface GameService {
     Game createGame(String gameIdentifier);
     Collection<Game> getGames();
-    boolean addGame(Game game);
+    void addGame(Game game);
     boolean removeGame(String gameId);
     Optional<Game> getGame(String gameId);
-    Game createGameWithIds(UUID gameId, int boardSize, List<UUID> playerIds, List<TokenEntity> initialTokens);
 }
 

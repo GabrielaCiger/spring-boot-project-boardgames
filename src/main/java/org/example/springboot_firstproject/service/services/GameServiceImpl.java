@@ -2,10 +2,7 @@ package org.example.springboot_firstproject.service.services;
 
 import fr.le_campus_numerique.square_games.engine.Game;
 import org.example.springboot_firstproject.data.access.GameDao;
-import org.example.springboot_firstproject.gametodatabase.GameRepository;
-import org.example.springboot_firstproject.gametodatabase.PlayerRepository;
-import org.example.springboot_firstproject.gametodatabase.TokenEntity;
-import org.example.springboot_firstproject.gametodatabase.TokenRepository;
+import org.example.springboot_firstproject.gametodatabase.*;
 import org.example.springboot_firstproject.service.plugin.GamePlugin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,8 +41,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public boolean addGame(Game game) {
-        return gameDao.addGame(game);
+    public void addGame(Game game) {
+        gameDao.addGame(game);
     }
 
     @Override
@@ -58,9 +55,5 @@ public class GameServiceImpl implements GameService {
         return gameDao.findById(gameId);
     }
 
-    @Override
-    public Game createGameWithIds(UUID gameId, int boardSize, List<UUID> playerIds, List<TokenEntity> initialTokens) {
-        return null;
-    }
 }
 

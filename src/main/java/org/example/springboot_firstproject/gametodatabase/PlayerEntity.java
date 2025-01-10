@@ -10,8 +10,6 @@ public class PlayerEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private String name;
-
     @ManyToOne
     @JoinColumn(name = "game_id")
     private GameEntity game;
@@ -22,14 +20,6 @@ public class PlayerEntity {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public GameEntity getGame() {

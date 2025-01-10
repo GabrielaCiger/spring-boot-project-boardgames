@@ -1,6 +1,6 @@
 package org.example.springboot_firstproject.gametodatabase;
 
-import fr.le_campus_numerique.square_games.engine.Token;
+import fr.le_campus_numerique.square_games.engine.GameStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -18,15 +18,16 @@ public class GameEntity {
 
         private @NotNull String factoryId;
         private @Positive int boardSize;
+        private @NotNull GameStatus gameStatus;
 
         @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
         private List<PlayerEntity> players = new ArrayList<>();
 
         @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-        private List<TokenEntity> tokens = new ArrayList<>();
+        private List<TokenEntity> remainingTokens = new ArrayList<>();
 
         @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-        private List<TokenEntity> remainingTokens = new ArrayList<>();
+        private List<TokenEntity> removedTokens = new ArrayList<>();
 
         private UUID currentPlayerId;
 
@@ -59,28 +60,44 @@ public class GameEntity {
         public List<PlayerEntity> getPlayers() {
                 return players;
         }
+        public List<UUID> getPlayerIds() {
+                List<UUID> playerIds = new ArrayList<>();
+                for (PlayerEntity player : players) {
+                        playerIds.add(player.getId());
+                }
+                return playerIds;
+        }
 
         public void setPlayers(List<PlayerEntity> players) {
                 this.players = players;
         }
 
-        public List<TokenEntity> getTokens() {
-                return tokens;
-        }
-
-        public void setTokens(List<TokenEntity> tokens) {
-                this.tokens = tokens;
-        }
         public List<TokenEntity> getRemainingTokens() {
                 return remainingTokens;
         }
-        public void setRemainingTokens(List<TokenEntity> remainingTokens) {
-                this.remainingTokens = remainingTokens;
+
+        public void setRemainingTokens(List<TokenEntity> tokens) {
+                this.remainingTokens = tokens;
+        }
+        public List<TokenEntity> getRemovedTokens() {
+                return removedTokens;
+        }
+
+        public void setRemovedTokens(List<TokenEntity> removedTokens) {
+                this.removedTokens = removedTokens;
         }
         public UUID getCurrentPlayerId() {
                 return currentPlayerId;
         }
         public void setCurrentPlayerId(UUID currentPlayerId) {
                 this.currentPlayerId = currentPlayerId;
+        }
+
+        public @NotNull GameStatus getGameStatus() {
+                return gameStatus;
+        }
+
+        public void setGameStatus(@NotNull GameStatus gameStatus) {
+                this.gameStatus = gameStatus;
         }
 }
