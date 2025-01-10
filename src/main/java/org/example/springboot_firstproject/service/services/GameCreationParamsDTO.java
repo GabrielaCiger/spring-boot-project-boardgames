@@ -8,24 +8,11 @@ public class GameCreationParamsDTO {
     @NotBlank(message = "Game can't be blank.")
     private String gameType;
 
-    private int boardSize;
-    private int playerCount;
-
-    public GameCreationParamsDTO(String gameType, int boardSize, int playerCount) {
+    public GameCreationParamsDTO(String gameType) {
         this.gameType = gameType;
-        this.boardSize = boardSize;
-        this.playerCount = playerCount;
     }
 
     public String getGameType() {
         return gameType;
-    }
-
-    public int getBoardSize() {
-        return boardSize;
-    }
-
-    public int getPlayerCount() {
-        return playerCount;
     }
 }

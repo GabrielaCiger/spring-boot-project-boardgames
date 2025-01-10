@@ -39,6 +39,6 @@ public class TaquinPlugin implements GamePlugin {
     }
     @Override
     public String getGameIdentifier() {
-        return "Taquin";
+        return "15 puzzle";
     }
 }

@@ -1,6 +1,7 @@
 package org.example.springboot_firstproject.service.services;
 
 import fr.le_campus_numerique.square_games.engine.Game;
+import jakarta.transaction.Transactional;
 import org.example.springboot_firstproject.data.access.GameDao;
 import org.example.springboot_firstproject.gametodatabase.*;
 import org.example.springboot_firstproject.service.plugin.GamePlugin;
@@ -10,16 +11,13 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
+@Transactional
 public class GameServiceImpl implements GameService {
 
     @Autowired
     GameDao gameDao;
 
     private final Map<String, GamePlugin> gamePlugins = new HashMap<>();
-    private GameRepository gameRepository;
-    private PlayerRepository playerRepository;
-    private TokenRepository tokenRepository;
-
 
     public GameServiceImpl(List<GamePlugin> plugins) {
         for (GamePlugin plugin : plugins) {
@@ -41,8 +39,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void addGame(Game game) {
-        gameDao.addGame(game);
+    public void addGame(String gameIdentifier) {
+        gameDao.addGame(createGame(gameIdentifier));
     }
 
     @Override

@@ -46,7 +46,8 @@ public class JpaGameDao implements GameDao {
 
     @Override
     public GameEntity addGame(Game game) {
-        return gameRepository.save(createGameEntity(game));
+        GameEntity entity = createGameEntity(game);
+        return gameRepository.save(entity);
     }
 
     @Override
@@ -66,7 +67,7 @@ public class JpaGameDao implements GameDao {
         List<UUID> playerIds = new ArrayList<>(game.getPlayerIds());
         List<PlayerEntity> players = new ArrayList<>();
 
-        for (int i = 1; i <= game.getPlayerIds().size(); i++) {
+        for (int i = 0; i < game.getPlayerIds().size(); i++) {
             PlayerEntity playerEntity = new PlayerEntity();
             playerEntity.setGame(gameEntity);
             playerEntity.setId(playerIds.get(i));
@@ -78,7 +79,7 @@ public class JpaGameDao implements GameDao {
         // * REMAINING TOKENS
         List<Token> tokens = new ArrayList<>(game.getRemainingTokens());
         List<TokenEntity> tokenEntities = new ArrayList<>();
-        for (int i = 0; i <= tokens.size(); i++) {
+        for (int i = 0; i < tokens.size(); i++) {
             tokenEntities.add(createTokenEntity(tokens.get(i)));
         }
         gameEntity.setRemainingTokens(tokenEntities);
@@ -86,10 +87,12 @@ public class JpaGameDao implements GameDao {
         // * REMOVED TOKENS
         List<Token> removedTokens = new ArrayList<>(game.getRemovedTokens());
         List<TokenEntity> removedTokenEntities = new ArrayList<>();
-        for (int i = 0; i <= tokens.size(); i++) {
-            removedTokenEntities.add(createTokenEntity(removedTokens.get(i)));
+        for (int i = 0; i < tokens.size(); i++) {
+            if (removedTokens.contains(tokens.get(i))) {
+                removedTokenEntities.add(createTokenEntity(removedTokens.get(i)));
+            }
         }
-        gameEntity.setRemainingTokens(removedTokenEntities);
+        gameEntity.setRemovedTokens(removedTokenEntities);
 
         return gameEntity;
     }
@@ -97,8 +100,10 @@ public class JpaGameDao implements GameDao {
     private TokenEntity createTokenEntity(Token token) {
         TokenEntity tokenEntity = new TokenEntity();
         tokenEntity.setId(token.getOwnerId().orElse(null));
-        tokenEntity.setX(token.getPosition().x());
-        tokenEntity.setY(token.getPosition().y());
+        if (tokenEntity.getOwnerId() != null) {
+            tokenEntity.setX(token.getPosition().x());
+            tokenEntity.setY(token.getPosition().y());
+        }
         return tokenEntity;
     }
 

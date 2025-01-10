@@ -38,6 +38,6 @@ public class TicTacToePlugin implements GamePlugin {
     }
     @Override
     public String getGameIdentifier() {
-        return "TicTacToe";
+        return "tictactoe";
     }
 }

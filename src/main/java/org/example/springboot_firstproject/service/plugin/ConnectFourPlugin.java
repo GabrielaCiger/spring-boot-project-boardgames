@@ -41,6 +41,6 @@ public class ConnectFourPlugin extends ConnectFourGameFactory implements GamePlu
     }
     @Override
     public String getGameIdentifier() {
-        return "ConnectFour";
+        return "connect4";
     }
 }

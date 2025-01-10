@@ -21,9 +21,8 @@ public class GameController {
     @PostMapping
     public ResponseEntity<?> createGame(@RequestBody @Validated GameCreationParamsDTO params) {
         try {
-            Game newGame = gameService.createGame(params.getGameType());
-            gameService.addGame(newGame);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newGame);
+            gameService.addGame(params.getGameType());
+            return ResponseEntity.status(HttpStatus.CREATED).body("Game created.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Invalid input: " + e.getMessage());
         } catch (Exception e) {
