@@ -109,8 +109,7 @@ public class JpaGameDao implements GameDao {
     }
 
     public Game createGameFromGameEntity(GameEntity gameEntity) throws InconsistentGameDefinitionException {
-        String factoryId = gameEntity.getFactoryId();
-        GameFactory gameFactory = getGameFactory(factoryId);
+        GameFactory gameFactory = getGameFactory(gameEntity.getFactoryId());
         assert gameFactory != null;
         return gameFactory.createGameWithIds(
                 gameEntity.getId(),
@@ -141,7 +140,6 @@ public class JpaGameDao implements GameDao {
     }
     private static TokenPosition<UUID> mapToken(TokenEntity tokenEntity) {
         try {
-            assert tokenEntity.getOwnerId() != null;
             return new TokenPosition<>(UUID.fromString(tokenEntity.getOwnerId().toString()),
                     tokenEntity.getName(),
                     tokenEntity.getX(),
