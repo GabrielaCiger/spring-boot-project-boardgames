@@ -1,5 +1,5 @@
 package org.example.springboot_firstproject.presentation;
-import org.example.springboot_firstproject.service.services.UserCreationParamsDTO;
+import org.example.springboot_firstproject.service.services.user.UserCreationParamsDTO;
 import org.example.springboot_firstproject.service.services.UserService;
 import org.example.springboot_firstproject.data.access.user.GameUser;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package org.example.springboot_firstproject.service.services;
+package org.example.springboot_firstproject.service.services.user;
 
 
 import jakarta.validation.constraints.NotBlank;
@@ -9,7 +9,7 @@ public class UserCreationParamsDTO {
 
     @NotNull
     @NotBlank
-    @Size(min = 2, max = 50)
+    @Size(min = 1, max = 50)
     private String username;
 
     @NotNull
