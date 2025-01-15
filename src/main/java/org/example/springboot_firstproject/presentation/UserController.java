@@ -12,7 +12,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -21,18 +21,6 @@ public class UserController {
     @GetMapping()
     public Iterable<GameUser> getAllUsers() {
         return userService.findAll();
-    }
-    @PostMapping()
-    public ResponseEntity<?> createUser(@RequestBody @Validated UserCreationParamsDTO params) {
-        try {
-           GameUser user = new GameUser();
-           user.setUsername(params.getUsername());
-           user.setPassword(params.getPassword());
-           userService.createUser(user);
-           return ResponseEntity.ok(user);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Unknown error : " + e.getMessage());
-        }
     }
     @GetMapping("/by-id/{id}")
     public ResponseEntity<?> getUser(@PathVariable int id) {

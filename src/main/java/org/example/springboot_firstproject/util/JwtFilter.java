@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.springboot_firstproject.service.services.user.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,11 +22,11 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil = new JwtUtil();
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
-    public JwtFilter(UserDetailsServiceImpl userDetailsServiceImpl) {
-        this.userDetailsServiceImpl = userDetailsServiceImpl;
-    }
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+
+    public JwtFilter() {}
 
     /* * The function verifies the JWT from the request header. If valid,
     * it authenticates the user and sets up their security context, allowing the application to recognize
