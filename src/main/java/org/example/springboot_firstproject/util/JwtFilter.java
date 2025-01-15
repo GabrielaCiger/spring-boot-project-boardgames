@@ -24,7 +24,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil = new JwtUtil();
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+    private UserDetailsService userDetailsService;
 
     public JwtFilter() {}
 
@@ -48,7 +48,7 @@ public class JwtFilter extends OncePerRequestFilter {
         final String username = jwtUtil.extractClaims(token).getSubject();
 
         // * If the token is valid, it creates a new SecurityContext and set Authentification object for the User :
-        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         if(jwtUtil.isTokenValid(token, userDetails.getUsername())) {
 

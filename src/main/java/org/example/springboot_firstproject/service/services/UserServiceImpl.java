@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -22,6 +23,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private final JwtUtil jwtUtil = new JwtUtil();
 
     @Override
@@ -33,7 +37,7 @@ public class UserServiceImpl implements UserService {
     public GameUser createUser(UserCredentialsDTO params) {
             GameUser gameUser = new GameUser();
             gameUser.setUsername(params.getUsername());
-            gameUser.setPassword(params.getPassword());
+            gameUser.setPassword(passwordEncoder.encode(params.getPassword()));
             gameUser.setRole("ROLE_USER");
             return gameUserRepository.save(gameUser);
          }
@@ -56,7 +60,7 @@ public class UserServiceImpl implements UserService {
         Optional<GameUser> userToUpdate = gameUserRepository.findById(String.valueOf(id));
         if (userToUpdate.isPresent()) {
             userToUpdate.get().setUsername(newUsername);
-            userToUpdate.get().setPassword(newPassword);
+            userToUpdate.get().setPassword(passwordEncoder.encode(newPassword));
             gameUserRepository.save(userToUpdate.get());
         } else {
             throw new RuntimeException("User not found");

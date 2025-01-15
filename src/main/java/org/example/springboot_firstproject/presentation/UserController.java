@@ -76,4 +76,8 @@ public class UserController {
         }
     }
 
+    @GetMapping("/test")
+    public String test() {
+        return "If you see this, you have passed the auth as an USER.";
+    }
 }
