@@ -1,4 +1,4 @@
-package org.example.springboot_firstproject.presentation;
+package org.example.springboot_firstproject.controller;
 import org.example.springboot_firstproject.service.services.GameCatalog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

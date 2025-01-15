@@ -1,11 +1,9 @@
-package org.example.springboot_firstproject.presentation;
-import org.example.springboot_firstproject.service.services.user.UserCreationParamsDTO;
+package org.example.springboot_firstproject.controller;
 import org.example.springboot_firstproject.service.services.UserService;
 import org.example.springboot_firstproject.data.access.user.GameUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 

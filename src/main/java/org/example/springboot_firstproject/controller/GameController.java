@@ -1,4 +1,4 @@
-package org.example.springboot_firstproject.presentation;
+package org.example.springboot_firstproject.controller;
 
 import fr.le_campus_numerique.square_games.engine.Game;
 import org.example.springboot_firstproject.service.services.GameCreationParamsDTO;

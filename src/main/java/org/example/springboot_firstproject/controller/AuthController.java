@@ -1,16 +1,11 @@
-package org.example.springboot_firstproject.presentation;
+package org.example.springboot_firstproject.controller;
 
 import org.example.springboot_firstproject.data.access.user.GameUser;
 import org.example.springboot_firstproject.data.access.user.TokenDTO;
 import org.example.springboot_firstproject.data.access.user.UserCredentialsDTO;
 import org.example.springboot_firstproject.service.services.UserService;
-import org.example.springboot_firstproject.service.services.user.UserCreationParamsDTO;
-import org.example.springboot_firstproject.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
